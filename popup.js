@@ -2,6 +2,7 @@
 
 let postHeaders;
 let linkInfo;
+let searchResults;
 let topicInfo;
 
 function prefixUrl(url) {
@@ -82,10 +83,74 @@ $("#add-link").click(function(event) {
       if (data.success) {
         linkInfo = data.data;
         $(".link-info > span").text(linkInfo.title);
-        
       }
     }
   });
+  $(".link-info > span").text("果果正在解析链接...💪");
   $(".link-info").show();
   $("#link-uploader").hide();
+});
+
+$("#link-info-remove").click(function(event) {
+  $(".link-info").hide();
+  $(".link-info > span").text("果果正在解析链接...💪");
+});
+
+$("#search-input").on("input", function(event) {
+  if (event.target.value) {
+    $.ajax({
+      url: "https://app.jike.ruguoapp.com/1.0/users/topics/search",
+      type: "post",
+      data: JSON.stringify({
+        keywords: event.target.value,
+        limit: 5,
+        onlyUserPostEnabled: true,
+        type: "ALL"
+      }),
+      contentType: "application/json",
+      headers: postHeaders,
+      dataType: "json",
+      success: function(data) {
+        if (data.count) {
+          searchResults = data.data;
+          $(".post-creator-topic-search-result").show();
+          const searchResultList = $(".result-list");
+          searchResultList.empty();
+          for (const result of searchResults) {
+            searchResultList.append(`<li class="result-item">
+            <svg class="symbol symbol-topic">
+              <use xlink:href="#symbol-topic"></use>
+            </svg>
+            <span>${result.content}</span>
+          </li>`);
+          }
+        }
+      }
+    });
+  } else {
+    $(".post-creator-topic-search-result").hide();
+    $(".result-list").empty();
+  }
+});
+
+$(".result-list").on("click", "li", function(event) {
+  const topicName = $(this)
+    .text()
+    .trim();
+  for (const t of searchResults) {
+    if (t.content === topicName) {
+      topicInfo = t;
+      break;
+    }
+  }
+  $(".topic-info > p > span").text(topicInfo.content);
+  $(".topic-info").show();
+  $(".post-creator-topic-search-result").hide();
+  $(".result-list").empty();
+  $("#topic-search").hide();
+});
+
+$("#topic-info-remove").click(function(event) {
+  $(".topic-info").hide();
+  $(".topic-info > p > span").text("主题名");
 });

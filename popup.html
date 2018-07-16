@@ -31,7 +31,7 @@
           <img src="https://cdn.ruguoapp.com/jike-web/static/images/default-link.f807cc5.png">
           <span>果果正在解析链接...💪</span>
           <a>
-            <svg class="symbol symbol-remove">
+            <svg class="symbol symbol-remove" id="link-info-remove">
               <use xlink:href="#symbol-remove"></use>
             </svg>
           </a>
@@ -40,7 +40,7 @@
           <p>在
             <span>主题名</span>中发布</p>
           <a>
-            <svg class="symbol symbol-remove">
+            <svg class="symbol symbol-remove" id="topic-info-remove">
               <use xlink:href="#symbol-remove"></use>
             </svg>
           </a>
@@ -72,14 +72,8 @@
       <div class="post-creator-topic-search-content">
         <input type="text" placeholder="搜索主题" value="" id="search-input">
       </div>
-      <div class="post-creator-topic-search-result">
+      <div class="post-creator-topic-search-result" style="display: none;">
         <ul class="result-list">
-          <li class="result-item ">
-            <svg class="symbol symbol-topic">
-              <use xlink:href="#symbol-topic"></use>
-            </svg>
-            <span>今天有值得看的足球比赛</span>
-          </li>
         </ul>
       </div>
     </div>
