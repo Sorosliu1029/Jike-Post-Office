@@ -2,7 +2,8 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="https://cdn.ruguoapp.com/jike-web/static/styles/app.9badb5ab235ac91862036ed3fd50f175.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
@@ -17,24 +18,27 @@
     <symbol viewBox="0 0 17 17" id="symbol-remove">
       <path d="M9.565 8.595l5.829 5.829a.686.686 0 0 1-.97.97l-5.83-5.83-5.828 5.83a.686.686 0 0 1-.97-.97l5.829-5.83-5.83-5.828a.686.686 0 1 1 .97-.97l5.83 5.829 5.829-5.83a.686.686 0 0 1 .97.97l-5.83 5.83z"></path>
     </symbol>
+    <symbol viewBox="0 0 16 16" id="symbol-warning">
+      <path d="M8 12.344a.8.8 0 1 1 0-1.6.8.8 0 0 1 0 1.6m-.599-8.087a.6.6 0 1 1 1.2 0v4.8a.6.6 0 0 1-1.2 0v-4.8M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0"></path>
+    </symbol>
   </svg>
   <div class="post-creator">
     <div class="post-creator-body">
       <div class="content-wrap">
-        <textarea placeholder="分享点好东西......「由即刻镇邮局 🏤 投递」" class="input" style="width: 320px; min-width: 320px; height: 100px; min-height: 100px; max-height: 400px; overflow-y: hidden;">
+        <textarea placeholder="分享点好东西......「由即刻镇邮局 🏤 投递」" class="input" style="width: 320px; min-width: 320px; height: 100px; min-height: 100px; overflow-y: hidden;">
         </textarea>
-        <div class="link-info" style="width: inherit">
+        <div class="link-info" style="display: none;">
           <img src="https://cdn.ruguoapp.com/jike-web/static/images/default-link.f807cc5.png">
-          <span>即刻 - 期待每一次推送</span>
+          <span>果果正在解析链接...💪</span>
           <a>
             <svg class="symbol symbol-remove">
               <use xlink:href="#symbol-remove"></use>
             </svg>
           </a>
         </div>
-        <div class="topic-info">
+        <div class="topic-info" style="display: none;">
           <p>在
-            <span>一起看世界杯</span>中发布</p>
+            <span>主题名</span>中发布</p>
           <a>
             <svg class="symbol symbol-remove">
               <use xlink:href="#symbol-remove"></use>
@@ -44,11 +48,11 @@
       </div>
       <div class="operation-wrap">
         <div>
-          <button class="btn btn-link">
+          <button class="btn btn-link" id="toggle-link">
             <svg class="symbol symbol-link">
               <use xlink:href="#symbol-link"></use>
             </svg>链接</button>
-          <button class="btn btn-link">
+          <button class="btn btn-link" id="toggle-topic">
             <svg class="symbol symbol-topic">
               <use xlink:href="#symbol-topic"></use>
             </svg>分享到主题</button>
@@ -58,7 +62,43 @@
         </div>
       </div>
     </div>
+    <div class="link-uploader" id="link-uploader" style="display: none;">
+      <div class="link-uploader-content">
+        <input type="text" placeholder="添加链接" value="" id="link-input">
+        <button class="btn btn-disabled" id="add-link" disabled="">添加</button>
+      </div>
+    </div>
+    <div class="post-creator-topic-search" id="topic-search" style="display: none;">
+      <div class="post-creator-topic-search-content">
+        <input type="text" placeholder="搜索主题" value="" id="search-input">
+      </div>
+      <div class="post-creator-topic-search-result">
+        <ul class="result-list">
+          <li class="result-item ">
+            <svg class="symbol symbol-topic">
+              <use xlink:href="#symbol-topic"></use>
+            </svg>
+            <span>今天有值得看的足球比赛</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="auth-warning" style="display: none; border-top: 2px solid gray; padding: 12px;">
+      <div class="btn btn-disabled" style="background: transparent; color: black">
+        <svg class="symbol symbol-link">
+          <use xlink:href="#symbol-warning"></use>
+        </svg>「即刻镇邮局」暂时没有得到授权</div>
+      <button class="btn btn-warning" id="auth-btn" style="display: block; margin: auto;">点击去「即刻Web」授权</button>
+      <div style="margin-top: 10px; font-size: 10px">
+        授权说明：
+        <br />1. 点击授权后，插件会直接获取 okjike.com 域名下的 Auth Token, 无需另外操作。
+        <br />2. Auth Token用于发送动态时作身份认证，不作其他用途，仅会保存在本地。
+        <b>若担心安全风险，请勿使用本插件。</b>
+        <br />3. Auth Token有过期时间，届时若发送失败，则需要重新授权。
+      </div>
+    </div>
   </div>
+  <script src="popup.js"></script>
 </body>
 
 </html>

@@ -8,6 +8,7 @@
   "incognito": "not_allowed",
   "minimum_chrome_version": "47.0.0",
   "offline_enabled": false,
+  "content_security_policy": "script-src 'self' https://code.jquery.com; object-src 'self'",
   "icons": {
     "16": "images/jpo16.png",
     "32": "images/jpo32.png",
@@ -18,7 +19,8 @@
     "storage",
     "contextMenus",
     "tabs",
-    "http://web.okjike.com/"
+    "http://web.okjike.com/",
+    "https://app.jike.ruguoapp.com/"
   ],
   "background": {
     "scripts": ["background.js"],
