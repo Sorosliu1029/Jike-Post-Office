@@ -92,6 +92,7 @@ $("#add-link").click(function(event) {
 });
 
 $("#link-info-remove").click(function(event) {
+  linkInfo = undefined;
   $(".link-info").hide();
   $(".link-info > span").text("果果正在解析链接...💪");
 });
@@ -151,6 +152,37 @@ $(".result-list").on("click", "li", function(event) {
 });
 
 $("#topic-info-remove").click(function(event) {
+  topicInfo = undefined;
   $(".topic-info").hide();
   $(".topic-info > p > span").text("主题名");
+});
+
+$("#send").click(function(event) {
+  const content = $(".input")
+    .val()
+    .trim();
+  if (content || linkInfo) {
+    const data = { content: content };
+    if (linkInfo) {
+      data.linkInfo = linkInfo;
+    }
+    if (topicInfo) {
+      data.submitToTopic = topicInfo.id;
+    }
+    $.ajax({
+      url: "https://app.jike.ruguoapp.com/1.0/originalPosts/create",
+      type: "post",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      headers: postHeaders,
+      dataType: "json",
+      success: function(data) {
+        $("#toast > span").text(data.toast);
+        $("#toast").show();
+        setTimeout(function() {
+          $("#toast").hide();
+        }, 3000)
+      }
+    });
+  }
 });
