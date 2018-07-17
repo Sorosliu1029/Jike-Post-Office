@@ -139,6 +139,10 @@ $("#add-link").click(function(event) {
         linkInfo = data.data;
         $(".link-info > span").text(linkInfo.title);
       }
+    },
+    statusCode: {
+      504: linkParseError,
+      401: tokenOutDated
     }
   });
   $(".link-info > span").text("果果正在解析链接...💪");
@@ -179,6 +183,10 @@ $("#search-input").on("input", function(event) {
           </li>`);
           }
         }
+      },
+      statusCode: {
+        401: tokenOutDated,
+        500: serverError
       }
     });
   } else {
@@ -239,13 +247,31 @@ $("#send").click(function(event) {
         }, 3000);
       },
       statusCode: {
-        401: function() {
-          $("#toast > span").text("Auth Token已过期，请重新授权");
-          $("#toast").show();
-          $("#auth-warning").show();
-          chrome.storage.sync.remove("authToken");
-        }
+        401: tokenOutDated,
+        500: serverError
       }
     });
   }
 });
+
+function tokenOutDated() {
+  showToast("Auth Token已过期，请重新授权", 6);
+  $("#auth-warning").show();
+  chrome.storage.sync.remove("authToken");
+}
+
+function serverError() {
+  showToast("服务器错误", 3);
+}
+
+function linkParseError() {
+  showToast("链接解析失败", 3);
+}
+
+function showToast(msg, duration) {
+  $("#toast > span").text(msg);
+  $("#toast").show();
+  setTimeout(function() {
+    $("#toast").hide();
+  }, duration * 1000);
+}
