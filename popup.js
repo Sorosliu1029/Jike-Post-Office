@@ -13,6 +13,18 @@ function prefixUrl(url) {
   }
 }
 
+function resetLinkInfo() {
+  linkInfo = undefined;
+  $(".link-info").hide();
+  $(".link-info > span").text("果果正在解析链接...💪");
+}
+
+function resetTopicInfo() {
+  topicInfo = undefined;
+  $(".topic-info").hide();
+  $(".topic-info > p > span").text("主题名");
+}
+
 chrome.storage.sync.get("authToken", function(data) {
   if (!data.authToken) {
     const authWarning = $("#auth-warning");
@@ -31,7 +43,40 @@ chrome.storage.sync.get("authToken", function(data) {
       // "User-Agent": "Jike Post Office",
       "x-jike-app-auth-jwt": data.authToken
     };
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(
+      tabs
+    ) {
+      const url = tabs[0].url;
+      $.ajax({
+        url: "https://app.jike.ruguoapp.com/1.0/readability/extract",
+        type: "post",
+        data: JSON.stringify({
+          link: url
+        }),
+        contentType: "application/json",
+        headers: postHeaders,
+        dataType: "json",
+        success: function(data) {
+          if (data.success) {
+            linkInfo = data.data;
+            $(".link-info > span").text(linkInfo.title);
+          }
+        }
+      });
+      $("#link-input").val(url);
+      $("#add-link").prop("disabled", false);
+      $("#add-link")
+        .addClass("btn-primary")
+        .removeClass("btn-disabled");
+      $(".link-info > span").text("果果正在解析链接...💪");
+      $(".link-info").show();
+      $("#link-uploader").hide();
+    });
   }
+});
+
+$(document).ready(function() {
+  $(".input").val("");
 });
 
 $("#auth-btn").click(function(event) {
@@ -92,9 +137,7 @@ $("#add-link").click(function(event) {
 });
 
 $("#link-info-remove").click(function(event) {
-  linkInfo = undefined;
-  $(".link-info").hide();
-  $(".link-info > span").text("果果正在解析链接...💪");
+  resetLinkInfo();
 });
 
 $("#search-input").on("input", function(event) {
@@ -104,7 +147,7 @@ $("#search-input").on("input", function(event) {
       type: "post",
       data: JSON.stringify({
         keywords: event.target.value,
-        limit: 5,
+        limit: 8,
         onlyUserPostEnabled: true,
         type: "ALL"
       }),
@@ -152,9 +195,7 @@ $(".result-list").on("click", "li", function(event) {
 });
 
 $("#topic-info-remove").click(function(event) {
-  topicInfo = undefined;
-  $(".topic-info").hide();
-  $(".topic-info > p > span").text("主题名");
+  resetTopicInfo();
 });
 
 $("#send").click(function(event) {
@@ -177,11 +218,22 @@ $("#send").click(function(event) {
       headers: postHeaders,
       dataType: "json",
       success: function(data) {
+        $(".input").val("");
+        resetLinkInfo();
+        resetTopicInfo();
         $("#toast > span").text(data.toast);
         $("#toast").show();
         setTimeout(function() {
           $("#toast").hide();
-        }, 3000)
+        }, 3000);
+      },
+      statusCode: {
+        401: function() {
+          $("#toast > span").text("Auth Token已过期，请重新授权");
+          $("#toast").show();
+          $("#auth-warning").show();
+          chrome.storage.sync.remove("authToken");
+        }
       }
     });
   }
