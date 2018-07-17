@@ -13,6 +13,13 @@ function prefixUrl(url) {
   }
 }
 
+setInterval(function() {
+  const content = $(".input")
+    .val()
+    .trim();
+  chrome.storage.local.set({ input: content });
+}, 5000);
+
 function resetLinkInfo() {
   linkInfo = undefined;
   $(".link-info").hide();
@@ -62,6 +69,9 @@ chrome.storage.sync.get("authToken", function(data) {
             $(".link-info > span").text(linkInfo.title);
           }
         }
+      });
+      chrome.storage.local.get("input", function(data) {
+        $(".input").val(data.input);
       });
       $("#link-input").val(url);
       $("#add-link").prop("disabled", false);
@@ -219,6 +229,7 @@ $("#send").click(function(event) {
       dataType: "json",
       success: function(data) {
         $(".input").val("");
+        chrome.storage.local.set({ input: "" });
         resetLinkInfo();
         resetTopicInfo();
         $("#toast > span").text(data.toast);
