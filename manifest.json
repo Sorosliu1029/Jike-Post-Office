@@ -1,6 +1,6 @@
 {
   "name": "Jike Post Office",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Ⓙ 即刻镇邮局，为发动态服务",
   "author": "Soros Liu, aka 搞即建的",
   "homepage_url": "https://github.com/Sorosliu1029/Jike-Post-Office",
@@ -20,6 +20,7 @@
     "contextMenus",
     "tabs",
     "http://web.okjike.com/",
+    "https://web.okjike.com/",
     "https://app.jike.ruguoapp.com/"
   ],
   "background": {

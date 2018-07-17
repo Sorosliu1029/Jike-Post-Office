@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(function(request) {
 function setAuthToken() {
   chrome.tabs.create(
     {
-      url: "http://web.okjike.com"
+      url: "https://web.okjike.com"
     },
     function(tab) {
       chrome.tabs.executeScript(
