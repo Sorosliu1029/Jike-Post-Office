@@ -13,6 +13,10 @@ Jike Post Office 🏤 是一款Chrome插件，以接近[「即刻Web」](http://
 - 可更改要发送的链接
 - 会自动保存用户输入的内容草稿，发送成功后清除
 
+Demo Gif:
+
+![Demo](demo.gif)
+
 PS：
 
 - 不支持上传图片，也不会考虑这个需求。如有需要，请使用「即刻Web」端。
