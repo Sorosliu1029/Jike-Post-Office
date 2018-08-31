@@ -19,7 +19,7 @@ function setAuthToken() {
       chrome.tabs.executeScript(
         tab.id,
         {
-          code: "localStorage['auth-token']"
+          code: "localStorage['access-token']"
         },
         function(results) {
           chrome.storage.sync.set({ authToken: results[0] });
