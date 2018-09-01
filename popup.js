@@ -48,7 +48,7 @@ chrome.storage.sync.get("authToken", function(data) {
       platform: "web",
       // Referer: "http://web.okjike.com",
       // "User-Agent": "Jike Post Office",
-      "x-jike-app-auth-jwt": data.authToken
+      "x-jike-access-token": data.authToken
     };
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(
       tabs
